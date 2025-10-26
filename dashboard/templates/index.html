@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Palm Grading Inference</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Alpine.js for dropdown functionality -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+  </head>
+  <body
+    class="bg-black"
+    x-data="{
+      scrolledFromTop: false,
+      open: false,
+      selectedModel: 'Select Model',
+      sidebarOpen: window.innerWidth >= 640
+    }"
+    x-init="window.pageYOffset >= 50 ? scrolledFromTop = true : scrolledFromTop = false"
+    @scroll.window="window.pageYOffset >= 50 ? scrolledFromTop = true : scrolledFromTop = false"
+    @resize.window="sidebarOpen = window.innerWidth >= 640"
+  >
+    <div class="container mx-auto px-4 flex">
+      <!-- Mobile menu button -->
+      <button
+        @click="sidebarOpen = true"
+        type="button"
+        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+      >
+        <span class="sr-only">Open sidebar</span>
+        <svg
+          class="w-6 h-6"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            clip-rule="evenodd"
+            fill-rule="evenodd"
+            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+          ></path>
+        </svg>
+      </button>
+      <aside
+        id="default-sidebar"
+        class="fixed top-0 left-0 z-40 w-80 h-screen transition-transform"
+        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+        aria-label="Sidebar"
+      >
+        <div
+          class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800"
+        >
+          <!-- Close button for mobile -->
+          <div class="flex justify-between items-center mb-4 sm:hidden">
+            <h1 class="text-white text-xl font-bold">
+              Palm Grading
+            </h1>
+            <button 
+              @click="sidebarOpen = false" 
+              class="p-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            >
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+          
+          <ul class="space-y-2 font-medium">
+            <header class="hidden sm:block">
+              <h1 class="text-white text-2xl font-bold">
+                Palm Grading Inference
+              </h1>
+            </header>
+          </ul>
+          <ul
+            class="pt-4 mt-4 space-y-4 font-medium border-t border-gray-200 dark:border-gray-700"
+          >
+            <!-- Upload Video -->
+            <li>
+              <h3 class="text-lg font-semibold text-gray-400 uppercase">
+                Upload Video
+              </h3>
+            </li>
+            <li>
+              <div class="flex items-center justify-center w-full">
+                <label
+                  for="dropzone-file"
+                  class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                >
+                  <div
+                    class="flex flex-col items-center justify-center pt-5 pb-6"
+                  >
+                    <svg
+                      class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 16"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                      />
+                    </svg>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                      <span class="font-semibold">Click to upload</span> or drag
+                      and drop
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                      MP4, MKV, AVI
+                    </p>
+                  </div>
+                  <input id="dropzone-file" type="file" class="hidden" />
+                </label>
+              </div>
+            </li>
+            <!-- Upload Video -->
+            <!-- Select Model -->
+            <li>
+              <h3 class="text-lg font-semibold text-gray-400 uppercase">
+                Select Model
+              </h3>
+            </li>
+            <li>
+              <div class="relative">
+                <button
+                  @click="open = !open"
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full"
+                  type="button"
+                >
+                  <span x-text="selectedModel"></span>
+                  <svg
+                    class="w-2.5 h-2.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 10 6"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 1 4 4 4-4"
+                    />
+                  </svg>
+                </button>
+
+                <!-- Dropdown menu -->
+                <div
+                  x-show="open"
+                  @click.outside="open = false"
+                  class="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-full dark:bg-gray-700"
+                >
+                  <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    {% for model in models %}
+                    <li>
+                      <a
+                        href="#"
+                        @click="selectedModel = '{{ model }}'; open = false"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      >
+                        {{ model }}
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <!-- Select Model -->
+          </ul>
+          <!-- Start Button -->
+          <ul class="mt-16">
+            <li>
+              <button
+                class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Start Process
+              </button>
+            </li>
+          </ul>
+          <!-- Start Button -->
+        </div>
+      </aside>
+      
+      <!-- Overlay for mobile -->
+      <div 
+        @click="sidebarOpen = false" 
+        class="fixed inset-0 z-30 bg-gray-900 bg-opacity-50 sm:hidden"
+        :class="sidebarOpen ? 'block' : 'hidden'"
+      ></div>
+
+    </div>
+    <div class="container mx-auto flex">
+      <!-- Main Content Area -->
+      <main class="sm:ml-64 w-full">
+        <!-- Your main content goes here -->
+        <div
+          class="w-full rounded-lg border-gray-300 dark:border-gray-600 mt-8"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="col-span-2">
+              <h3 class="text-lg text-white mb-2">Video Preview</h3>
+              <div
+                class="flex items-center justify-center h-96 rounded bg-gray-50 dark:bg-gray-800"
+              >
+                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                  <i class="fas fa-image"></i>
+                </p>
+              </div>
+            </div>
+            <div class="col-span-1">
+              <h3 class="text-lg text-white mb-2">Live Count</h3>
+              <div
+                class="flex items-center justify-center h-96 rounded bg-gray-50 dark:bg-gray-800"
+              >
+                <p class="text-2xl text-gray-400 dark:text-gray-500">
+                  <i class="fas fa-image"></i>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <h3 class="text-lg text-white mb-2">Report Table</h3>
+            <div
+              class="flex items-center justify-center h-96 w-full rounded bg-gray-50 dark:bg-gray-800"
+            >
+              <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <i class="fas fa-chart-bar"></i>
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

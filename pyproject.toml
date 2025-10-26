@@ -1,0 +1,15 @@
+[project]
+name = "inference-sawit"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.2",
+    "flask-sqlalchemy>=3.1.1",
+    "lap>=0.5.12",
+    "opencv-python>=4.12.0.88",
+    "pytz>=2025.2",
+    "shapely>=2.1.2",
+    "ultralytics>=8.3.221",
+]
