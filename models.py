@@ -10,6 +10,7 @@ class Video(db.Model):
     __tablename__ = 'video'
     id = db.Column(db.Integer, primary_key=True)
     video_file_name = db.Column(db.String(100))
+    model_name = db.Column(db.String(100), nullable=True)
     total_count = db.Column(db.Integer, nullable = True)
     empty_count = db.Column(db.Integer, nullable = True)
     empty_ls_count = db.Column(db.Integer, nullable = True)

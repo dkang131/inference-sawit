@@ -1,2 +1,2 @@
 class dbConfig:
-    DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/postgres'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:123456@localhost:5432/gradinginference'
